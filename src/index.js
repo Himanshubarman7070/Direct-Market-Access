@@ -10,7 +10,7 @@ import MainPage from './pages/MainPage'
 import Orders from './pages/Orders';
 import Profile from './pages/Profile';
 import Cart from './pages/Cart';
-
+import PlaceOrder from './pages/PlaceOrder'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -26,7 +26,8 @@ root.render(
           <Route path="orders" element={<Orders />} />
           <Route path="profile" element={<Profile />} />
        </Route> 
-      <Route path="cart" element={<Cart/>}></Route>   
+      <Route path="cart" element={<Cart/>}></Route>  
+      <Route path='place' element={<PlaceOrder/>}></Route> 
    </Routes>
    </BrowserRouter>
   </>

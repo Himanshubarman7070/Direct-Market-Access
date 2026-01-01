@@ -101,7 +101,7 @@
   margin-left: 6px;
 }
 
-/* ---------- TABLET (≤ 768px) ---------- */
+/* --------tablet---------- */
 @media (max-width: 768px) {
   .Signup-form {
     padding: 24px 20px;
@@ -112,7 +112,7 @@
   }
 }
 
-/* ---------- MOBILE (≤ 480px) ---------- */
+/* ---------- MOBILE ---------- */
 @media (max-width: 480px) {
   .Signup-form {
     max-width: 100%;
@@ -136,7 +136,7 @@
   }
 }
 
-/* ---------- MOBILE LANDSCAPE (Phone Rotate) ---------- */
+/* -------Phone Rotate ---------- */
 @media (max-height: 450px) {
   .Signup-container {
     align-items: flex-start;
