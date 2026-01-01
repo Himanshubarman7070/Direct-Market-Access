@@ -13,7 +13,7 @@ export default function Login(){
          <div className="Login-container">
            <form className="Login-form">
             <div className="Login-text1"> Welcome</div>
-            <div className="Login-text2" >Direct Market Access</div>
+            <div className="Login-text2" >Direct Market Access 2</div>
             <div className="Login-text">Email</div>
             <input type="email" placeholder="  Enter your email id" className="Login-input"/>
             <div className="Login-text">Password</div>
