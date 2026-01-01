@@ -3,10 +3,10 @@ import { useNavigate } from "react-router-dom";
 export default function Login(){
   let usenavigate = useNavigate();
   let signup = ()=>{
-    usenavigate('/Signup');
+    usenavigate('/signup');
   }
   let login = ()=>{
-    usenavigate('/Home')
+    usenavigate('/home')
   }
     return (
         <>
