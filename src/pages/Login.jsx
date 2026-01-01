@@ -20,8 +20,8 @@ export default function Login(){
             <input type="email" placeholder="  Enter your email id" className="Login-input"/>
             <div className="Login-text">Password</div>
             <input  type="password" placeholder="  Enter your password" className="Login-input"/>
-            <button type="submit" className="Login-btn" onClick={login}>Log in</button>
-            <div className="Login-text3">Don't have an account?<button className="Login-btn2" onClick={signup}>Sign Up</button></div>
+            <button type="button" className="Login-btn" onClick={login}>Log in</button>
+            <div className="Login-text3">Don't have an account?<button type="button" className="Login-btn2" onClick={signup}>Sign Up</button></div>
            </form>
          </div>
         </>
