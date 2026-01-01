@@ -2,12 +2,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function Login(){
   let usenavigate = useNavigate();
-  let signup = (e)=>{
-    e.preventDefault();
+  let signup = ()=>{
     usenavigate('/signup');
   }
   let login = ()=>{
-     e.preventDefault();
     usenavigate('/home')
   }
     return (
