@@ -1,93 +1,140 @@
-*{
+/* ---------- GLOBAL RESET ---------- */
+* {
   margin: 0;
   padding: 0;
-  font-family: 'Poppins',sans-serif;
-}
-#root{
-  height: 100vh;
-  width: 100vw;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-.Login-container{
-  height: 100%;
+/* ---------- PAGE CENTERING ---------- */
+.Login-container {
+  min-height: 100vh;
   width: 100%;
-  background: linear-gradient(to bottom, #437850,#41777D);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  background: #f4f6f8;
+  padding: 16px;
 }
-.Login-form{
-  height: 90%;
-  background-color:#FBFAFA;
-  width: 30%;
-  min-width: 350px;
-  border-radius: 24px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+
+/* ---------- LOGIN CARD ---------- */
+.Login-form {
+  width: 100%;
+  max-width: 420px;
+  background: #ffffff;
+  padding: 28px 24px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-.Login-text1{
-  width: 70%;
-  margin-top: 15%;
-  font-size: 2.5vh;
-}
-.Login-text2{
-  width: 70%;
-  margin-top: 5%;
-  margin-bottom: 10%;
-  font-size: 4vh;
-  font-weight: bolder;
-}
-.Login-label{
-  width: 70%;
-  height: 7%;
-}
-.Login-input{
-    width: 70%;
-    height: 7%;
-    font-size: 1.9vh;
-    margin-bottom: 10%;
-}
-.Login-text{
-  width: 70%;
-  margin-bottom: 2%;
-}
-.Login-btn{
-  width: 70%;
-  background-color:#296D42;
-  color: white;
-  border: none;
-  border-radius: 2px;
-  font-family: 'arial',sans-serif;
-  font-weight: bolder;
-  height: 8%;
-  margin-bottom: 10%;
-}
-.Login-btn2{
-  border: none;
-  color: green ;
-  background-color: #FBFAFA;
-  font-weight: bold;
-  font-size: 2.8vh
-}
-.Login-text3{
-  width:70%;
-}
-#signup-radio{
-  display: inline;
 }
 
-/* 📱 Mobile –  */
-@media (max-width:600px){
-  .Login-form{
-    height: 70vh;
+/* ---------- TEXT ---------- */
+.Login-text1 {
+  font-size: 26px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.Login-text2 {
+  font-size: 16px;
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 22px;
+}
+
+.Login-text {
+  font-size: 14px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.Login-text3 {
+  font-size: 14px;
+  margin-top: 16px;
+  text-align: center;
+}
+
+/* ---------- INPUT ---------- */
+.Login-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  margin-bottom: 14px;
+  outline: none;
+}
+
+.Login-input:focus {
+  border-color: #2e7d32;
+}
+
+/* ---------- BUTTONS ---------- */
+.Login-btn {
+  height: 44px;
+  background: #2e7d32;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.Login-btn:hover {
+  background: #256628;
+}
+
+.Login-btn2 {
+  background: none;
+  border: none;
+  color: #2e7d32;
+  font-weight: 600;
+  cursor: pointer;
+  margin-left: 6px;
+}
+
+/* ---------- TABLET ---------- */
+@media (max-width: 768px) {
+  .Login-form {
+    padding: 24px 20px;
   }
-  .Login-input{
-    margin-bottom: 5%;
-  }
-  .Login-btn2{
-    font-size: 1.2rem;
+
+  .Login-text1 {
+    font-size: 24px;
   }
 }
-/* tablet */
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 480px) {
+  .Login-form {
+    max-width: 100%;
+    padding: 22px 18px;
+  }
+
+  .Login-text1 {
+    font-size: 22px;
+  }
+
+  .Login-text2 {
+    font-size: 14px;
+  }
+
+  .Login-input,
+  .Login-btn {
+    height: 42px;
+    font-size: 14px;
+  }
+}
+
+/* ---------- MOBILE rotate ---------- */
+@media (max-height: 450px) {
+  .Login-container {
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+}
