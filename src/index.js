@@ -6,7 +6,10 @@ import { BrowserRouter,Routes,Route } from 'react-router-dom';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Home from './pages/Home';
-
+import MainPage from './pages/MainPage'
+import Chat  from './pages/Chat';
+import Orders from './pages/Orders';
+import Profile from './pages/Profile';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -16,7 +19,13 @@ root.render(
    <Routes>
     <Route path='/' element={<Login/>}> </Route>
     <Route path='/signup' element={<Signup/>}></Route>
-    <Route path='/home' element={<Home/>}></Route>
+     <Route path="/mainpage" element={<MainPage />}>
+          <Route  index element={<Home/>}/>
+          <Route path="home" element={<Home />} />
+          <Route path="chat" element={<Chat />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="profile" element={<Profile />} />
+       </Route>   
    </Routes>
    </BrowserRouter>
   </>

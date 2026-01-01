@@ -21,7 +21,7 @@ export default function Signup(){
                  <input type="number" placeholder="  Pincode"className="Signup-input"/>
                  <input type="text" placeholder="  Complete Address " className="Signup-input"/>
                  <div className="Signup-radio"><button className="Signup-btn"> Sign Up </button></div>
-                 <div className="Signup-text2"> Already have an account? <button className="Login-btn2" onClick={login}>Log in</button></div>
+                 <div className="Signup-text2"> Already have an account? <button type="button" className="Login-btn2" onClick={login}>Log in</button></div>
                </form>
          </div>
           
