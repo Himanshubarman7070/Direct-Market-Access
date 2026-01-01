@@ -1,4 +1,4 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import "./Home.css";
 import { useState } from "react";
 
@@ -7,6 +7,8 @@ export default function Navbar({ search, setSearch }) {
    let location = useLocation();
    const isHomeActive =
     location.pathname === "/" || location.pathname === "/home";
+    let usenavigate = useNavigate();
+    
 
   return (
     <nav className="navbar">
@@ -19,8 +21,8 @@ export default function Navbar({ search, setSearch }) {
           </NavLink>
         </li>
         <li>
-          <NavLink to="chat" onClick={() => setDisplaySearch(false)}>
-            Chat
+          <NavLink to="mycrops" onClick={() => setDisplaySearch(false)}>
+            MyCrops
           </NavLink>
         </li>
         <li>
@@ -43,7 +45,7 @@ export default function Navbar({ search, setSearch }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <button className="cart-btn">Cart 🛒</button>
+          <button type="button" className="cart-btn" onClick={()=>{usenavigate('/cart')}}>Cart 🛒</button>
         </div>
       )}
     </nav>

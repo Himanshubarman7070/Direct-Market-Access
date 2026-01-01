@@ -7,9 +7,9 @@ import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import MainPage from './pages/MainPage'
-import Chat  from './pages/Chat';
 import Orders from './pages/Orders';
 import Profile from './pages/Profile';
+import Cart from './pages/Cart';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -22,10 +22,11 @@ root.render(
      <Route path="/mainpage" element={<MainPage />}>
           <Route  index element={<Home/>}/>
           <Route path="home" element={<Home />} />
-          <Route path="chat" element={<Chat />} />
+          <Route path="mycrops" element={<Orders/>} />
           <Route path="orders" element={<Orders />} />
           <Route path="profile" element={<Profile />} />
-       </Route>   
+       </Route> 
+      <Route path="cart" element={<Cart/>}></Route>   
    </Routes>
    </BrowserRouter>
   </>
