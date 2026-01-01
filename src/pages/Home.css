@@ -1,0 +1,72 @@
+.Home-container{
+    background-color: #F4F3ED;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    scrollbar-width: none;
+    font-family:'arial',sans-serif ;
+}
+.Home-head{
+    height: 10%;
+    width: 100vw;
+    background-color: white;
+    font-size: 1.3rem;
+}
+.Home-head-img{
+    height: 24px;
+    width: 24px;
+    border: 50%;
+    margin-left: 2%;
+    margin-right: 1%;
+}
+.Home-head1{
+    height: 100%;
+    width: 100vw;
+    margin-left: 2%;
+    font-weight: bolder;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.Home-search-container{
+    height: 100%;
+    width: 55vw;
+    margin-left: 10vw;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+.Home-search{
+    height: 40%;
+    width: 30vw;
+    border: none;
+    box-shadow: 0px 0px 5px rgba(0, 0,0, 0.25);
+    margin-right: 1vw;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  
+}
+.Home-bell{
+    margin-right: 2vw;
+}
+.Home-nav{
+    width: 100vw;
+    height: 7vh;
+    background-color:white ;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.Home-nav-icon{
+    font-size: 0.9rem;
+    height: 3vh;
+    width: 7vw;
+    display: flex;
+    justify-content: center;
+}
+.Home-nav-text{
+    width: 7vw;
+    display: flex;
+    justify-content: center;
+}

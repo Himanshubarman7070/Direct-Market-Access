@@ -1,0 +1,80 @@
+.Signup-container{
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to bottom, #437850,#41777D);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Signup-form{
+    height: auto;
+    width: 36svw;
+    border-radius: 24px;
+    background-color: white;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.25);
+}
+.Signup-radio{
+     width: 24vw;
+    height: 5vh;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-left: 6vw;
+    margin-right: 6vw;
+}
+.Signup-text{
+    font-size: 1.3rem;
+    font-weight: bolder;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Signup-input{
+    width: 24vw;
+    height: 5vh;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+    margin-left: 6vw;
+    margin-right: 6vw;
+}
+.Signup-btn{
+    background-color: #437850;
+    padding: 1vh;
+    color: white;
+    border: none;
+    width: 24vw;
+}
+.Signup-text2{
+     width: 24vw;
+    height: 5vh;
+    margin-top: 2vh;
+    margin-bottom: 4vh;
+    margin-left: 6vw;
+    margin-right: 6vw;
+
+}
+.Signup-buyer{
+    margin-right: 2vw;
+}
+@media (max-width:600px){
+    .Signup-form{
+        width: 84vw;
+    }
+    .Signup-input{
+        width: 64vw;
+        margin-left: 10vw;
+    }
+    .Signup-radio{
+        width: 64vw;
+        margin-left: 10vw;
+    }
+    .Signup-btn{
+        width: 64vw;
+    }
+    .Signup-text2{
+        width: 64vw;
+        margin-left: 10vw;
+    }
+}
+

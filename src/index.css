@@ -1,13 +1,93 @@
-body {
+*{
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  padding: 0;
+  font-family: 'Poppins',sans-serif;
+}
+#root{
+  height: 100vh;
+  width: 100vw;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.Login-container{
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to bottom, #437850,#41777D);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+.Login-form{
+  height: 90%;
+  background-color:#FBFAFA;
+  width: 30%;
+  min-width: 350px;
+  border-radius: 24px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.Login-text1{
+  width: 70%;
+  margin-top: 15%;
+  font-size: 2.5vh;
+}
+.Login-text2{
+  width: 70%;
+  margin-top: 5%;
+  margin-bottom: 10%;
+  font-size: 4vh;
+  font-weight: bolder;
+}
+.Login-label{
+  width: 70%;
+  height: 7%;
+}
+.Login-input{
+    width: 70%;
+    height: 7%;
+    font-size: 1.9vh;
+    margin-bottom: 10%;
+}
+.Login-text{
+  width: 70%;
+  margin-bottom: 2%;
+}
+.Login-btn{
+  width: 70%;
+  background-color:#296D42;
+  color: white;
+  border: none;
+  border-radius: 2px;
+  font-family: 'arial',sans-serif;
+  font-weight: bolder;
+  height: 8%;
+  margin-bottom: 10%;
+}
+.Login-btn2{
+  border: none;
+  color: green ;
+  background-color: #FBFAFA;
+  font-weight: bold;
+  font-size: 2.8vh
+}
+.Login-text3{
+  width:70%;
+}
+#signup-radio{
+  display: inline;
+}
+
+/* 📱 Mobile –  */
+@media (max-width:600px){
+  .Login-form{
+    height: 70vh;
+  }
+  .Login-input{
+    margin-bottom: 5%;
+  }
+  .Login-btn2{
+    font-size: 1.2rem;
+  }
+}
+/* tablet */
