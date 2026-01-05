@@ -11,6 +11,9 @@ import Orders from './pages/Orders';
 import Profile from './pages/Profile';
 import Cart from './pages/Cart';
 import PlaceOrder from './pages/PlaceOrder'
+import MyCrops from './pages/MyCrops';
+import AddCrops from './pages/AddCrops';
+import AllBookings from './pages/AllBookings';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -22,9 +25,11 @@ root.render(
      <Route path="/mainpage" element={<MainPage />}>
           <Route  index element={<Home/>}/>
           <Route path="home" element={<Home />} />
-          <Route path="mycrops" element={<Orders/>} />
+          <Route path="mycrops" element={<MyCrops/>} />
           <Route path="orders" element={<Orders />} />
           <Route path="profile" element={<Profile />} />
+          <Route path='addcrops' element={<AddCrops/>}></Route>
+          <Route path='allbookings' element={<AllBookings/>}></Route>
        </Route> 
       <Route path="cart" element={<Cart/>}></Route>  
       <Route path='place' element={<PlaceOrder/>}></Route> 

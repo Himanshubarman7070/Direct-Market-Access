@@ -1,0 +1,167 @@
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+/* PAGE */
+.AllBookings-page {
+  padding: 16px 6%;
+  background: #f5f7f5;
+  min-height: 100vh;
+}
+
+.AllBookings-title {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 14px;
+  font-size: 20px;
+}
+
+/* CONTAINER */
+.AllBookings-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* CARD */
+.AllBookings-card {
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ROWS */
+.AllBookings-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 3px 0;
+  font-size: 13px;
+}
+
+.AllBookings-label {
+  font-weight: 600;
+  color: #555;
+  min-width: 90px;
+}
+
+.AllBookings-amount {
+  font-weight: bold;
+  color: #2e7d32;
+}
+
+/* STATUS */
+.AllBookings-statusRow {
+  margin-top: 6px;
+}
+
+.AllBookings-statusText {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Status colors (TEXT ONLY) */
+.AllBookings-statusText.confirmed {
+  color: #1976d2;
+}
+.AllBookings-statusText.packed {
+  color: #f9a825;
+}
+.AllBookings-statusText.departed {
+  color: #ef6c00;
+}
+.AllBookings-statusText.delivered {
+  color: #2e7d32;
+}
+.AllBookings-statusText.cancelled {
+  color: #c62828;
+}
+
+/* ACTION BUTTONS */
+.AllBookings-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.AllBookings-actionBtn {
+  min-width: 120px;
+  height: 34px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #fff;
+}
+
+/* UPDATE */
+.AllBookings-updateBtn {
+  background: #2e7d32;
+}
+.AllBookings-updateBtn:hover {
+  background: #1b5e20;
+}
+
+/* CANCEL */
+.AllBookings-cancelBtn {
+  background: #d32f2f;
+}
+.AllBookings-cancelBtn:hover {
+  background: #b71c1c;
+}
+
+/* OTP */
+.AllBookings-otpSection {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.AllBookings-otpInput {
+  flex: 1;
+  min-width: 150px;
+  height: 34px;
+  padding: 0 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.AllBookings-otpInput:focus {
+  outline: none;
+  border-color: #2e7d32;
+}
+
+.AllBookings-otpBtn {
+  min-width: 120px;
+  height: 34px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  background: #2e7d32;
+  color: #fff;
+  cursor: pointer;
+}
+
+.AllBookings-otpBtn:hover {
+  background: #1b5e20;
+}
+
+/* TABLET */
+@media (min-width: 768px) {
+  .AllBookings-card {
+    padding: 12px 18px;
+  }
+}
+
+/* DESKTOP */
+@media (min-width: 1024px) {
+  .AllBookings-container {
+    max-width: 900px;
+    margin: auto;
+  }
+}

@@ -1,0 +1,151 @@
+/* ================= PAGE ================= */
+.AddCrop-wrapper {
+  padding: 14px;
+  background: #f4f6f8;
+  min-height: 100vh;
+}
+
+.AddCrop-card {
+  max-width: 520px;
+  margin: auto;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+}
+
+.AddCrop-card h2 {
+  text-align: center;
+  color: #2e7d32;
+  margin-bottom: 16px;
+}
+
+/* ================= IMAGE ================= */
+.image-upload {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.image-box,
+.image-upload img {
+  width: 140px;
+  height: 140px;
+  border-radius: 16px;
+}
+
+.image-box {
+  border: 2px dashed #2e7d32;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #2e7d32;
+  font-weight: 600;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.image-upload img {
+  object-fit: cover;
+  border: 2px solid #2e7d32;
+  cursor: pointer;
+}
+
+/* ================= FORM ================= */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.section label {
+  font-size: 13px;
+  color: #555;
+}
+
+.section input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1.5px solid #ccc;
+  font-size: 15px;
+}
+
+/* ✅ GREEN FOCUS BORDER */
+.section input:focus,
+.row input:focus {
+  outline: none;
+  border: 2px solid #2e7d32;
+  box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
+}
+
+/* ================= ROW ================= */
+.row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.row input {
+  flex: 1;
+}
+
+/* ================= DELIVERY ================= */
+.delivery-box {
+  background: #f8faf9;
+  padding: 14px;
+  border-radius: 14px;
+  margin-top: 10px;
+}
+
+.delivery-box h4 {
+  margin-bottom: 10px;
+  color: #2e7d32;
+}
+
+/* ✅ Bigger pincode & area inputs */
+.delivery-box input {
+  height: 48px;
+  font-size: 15px;
+  padding: 10px 12px;
+}
+
+/* ADD LOCATION BUTTON */
+.add-location-btn {
+  margin-top: 8px;
+  background: #1976d2;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-location-btn:hover {
+  background: #1565c0;
+}
+
+/* ================= SAVE ================= */
+.save-btn {
+  margin-top: 18px;
+  width: 100%;
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+  color: white;
+  padding: 14px;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 600px) {
+  .row {
+    flex-direction: column;
+  }
+}

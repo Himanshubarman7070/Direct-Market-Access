@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "./PlaceOrder.css";
 
 export default function PlaceOrder() {
+  const usenavigate = useNavigate();
   const { state } = useLocation();
   const item = state;
 
@@ -92,7 +93,22 @@ export default function PlaceOrder() {
             </p>
           </div>
 
-          <button className="place-order-confirm-btn">
+          <button type="button" onClick={()=>{usenavigate('/mainpage/orders',{state:{
+      
+      id: item.id,
+      cropName: item.name,
+      image:
+        item.image,
+      seller: item.seller,
+      orderDate: "30 Dec 2025",
+      deliveryDate: "03 Jan 2026",
+      amount: finalPrice,
+      quantity: quantity,
+      status: "confirm",
+      otp: Math.floor(Math.random()*100000),
+      address: "Near Bus Stand, Kolar Road, Bhopal, MP",
+      pincode: "462042",
+    }})}} className="place-order-confirm-btn">
             Confirm Order
           </button>
         </div>
