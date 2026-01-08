@@ -1,4 +1,4 @@
-/* ================= PAGE ================= */
+
 .AddCrop-wrapper {
   padding: 14px;
   background: #f4f6f8;
@@ -20,7 +20,7 @@
   margin-bottom: 16px;
 }
 
-/* ================= IMAGE ================= */
+
 .image-upload {
   display: flex;
   justify-content: center;
@@ -52,7 +52,7 @@
   cursor: pointer;
 }
 
-/* ================= FORM ================= */
+
 .section {
   display: flex;
   flex-direction: column;
@@ -72,7 +72,7 @@
   font-size: 15px;
 }
 
-/* ✅ GREEN FOCUS BORDER */
+
 .section input:focus,
 .row input:focus {
   outline: none;
@@ -80,7 +80,7 @@
   box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.15);
 }
 
-/* ================= ROW ================= */
+
 .row {
   display: flex;
   gap: 10px;
@@ -91,7 +91,7 @@
   flex: 1;
 }
 
-/* ================= DELIVERY ================= */
+
 .delivery-box {
   background: #f8faf9;
   padding: 14px;
@@ -104,14 +104,14 @@
   color: #2e7d32;
 }
 
-/* ✅ Bigger pincode & area inputs */
+
 .delivery-box input {
   height: 48px;
   font-size: 15px;
   padding: 10px 12px;
 }
 
-/* ADD LOCATION BUTTON */
+
 .add-location-btn {
   margin-top: 8px;
   background: #1976d2;
@@ -129,7 +129,7 @@
   background: #1565c0;
 }
 
-/* ================= SAVE ================= */
+
 .save-btn {
   margin-top: 18px;
   width: 100%;
@@ -143,7 +143,6 @@
   cursor: pointer;
 }
 
-/* ================= MOBILE ================= */
 @media (max-width: 600px) {
   .row {
     flex-direction: column;

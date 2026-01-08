@@ -1,60 +1,94 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { url } from "./Info";
 import "./MyCrops.css";
 
 export default function MyCrops() {
   const navigate = useNavigate();
+  const [crops, setCrops] = useState([]);
 
-  const [crops] = useState([
-    {
-      id: 1,
-      name: "Tomato",
-      seller: "Himanshu Barman",
-      price: 25,
-      deliveryCharge: 5,
-      stock: 120, // ✅ STOCK
-      pincodes: [
-        { code: "462001", area: "MP Nagar" },
-        { code: "462003", area: "Arera Colony" },
-        { code: "462016", area: "BHEL" },
-      ],
-      image:
-        "https://images.unsplash.com/photo-1607305387299-a3d9611cd469",
-    },
-    {
-      id: 2,
-      name: "Potato",
-      seller: "Himanshu Barman",
-      price: 18,
-      deliveryCharge: 4,
-      stock: 200, // ✅ STOCK
-      pincodes: [
-        { code: "462020", area: "Kolar" },
-        { code: "462021", area: "Misrod" },
-      ],
-      image:
-        "https://images.unsplash.com/photo-1582515073490-dc84f2a6f4a8",
-    },
-  ]);
+  // 🔹 Fetch crops
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+
+    fetch(`${url}/myallcrops/${email}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === "success") {
+          const formatted = res.data.map((crop) => ({
+            id: crop._id,
+            name: crop.crop_name,
+            seller: email,
+            price: crop.price,
+            stock: crop.stock,
+            deliveryCharge: crop.delivery_charge,
+            pincodes: crop.pincode,
+            image: crop.image
+          }));
+
+          setCrops(formatted);
+        }
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
+  // 🔴 REMOVE CROP LOGIC
+  const removeCrop = async (cropId) => {
+    const confirmDelete = window.confirm(
+      "Removing this crop will CANCEL ALL BOOKINGS.\nAre you sure?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const res = await fetch(`${url}/removecrop/${cropId}`, {
+        method: "DELETE"
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        setCrops((prev) =>
+          prev.filter((crop) => crop.id !== cropId)
+        );
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="MyCrops-container">
       <div className="MyCrops-header">
         <h2>🌾 My Crops</h2>
-        <button type="button" onClick={()=>{navigate('/mainpage/addcrops')}} className="MyCrops-add-btn">+ Add Crop</button>
+        <button
+          type="button"
+          onClick={() => navigate("/mainpage/addcrops")}
+          className="MyCrops-add-btn"
+        >
+          + Add Crop
+        </button>
       </div>
 
-      {/* ✅ ROW WISE GRID */}
+      {/* ✅ UI UNCHANGED */}
       <div className="MyCrops-grid">
         {crops.map((crop) => (
           <div className="MyCrops-card" key={crop.id}>
-            <img src={crop.image} alt={crop.name} className="MyCrops-image" />
+            <img
+              src={crop.image}
+              alt={crop.name}
+              className="MyCrops-image"
+            />
 
             <div className="MyCrops-details">
               <h3>{crop.name}</h3>
               <p>Seller: {crop.seller}</p>
               <p>Price: ₹{crop.price}/kg</p>
-              <p>Stock: <strong>{crop.stock} kg</strong></p>
+              <p>
+                Stock: <strong>{crop.stock} kg</strong>
+              </p>
               <p>Delivery: ₹{crop.deliveryCharge}</p>
 
               <div className="MyCrops-pincodes">
@@ -76,7 +110,6 @@ export default function MyCrops() {
                 All Bookings
               </button>
 
-              {/* ✅ UPDATE BUTTON */}
               <button
                 className="MyCrops-update-btn"
                 onClick={() =>
@@ -86,7 +119,10 @@ export default function MyCrops() {
                 Update
               </button>
 
-              <button className="MyCrops-remove-btn">
+              <button
+                className="MyCrops-remove-btn"
+                onClick={() => removeCrop(crop.id)}
+              >
                 Remove
               </button>
             </div>

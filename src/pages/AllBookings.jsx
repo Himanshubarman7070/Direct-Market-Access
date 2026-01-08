@@ -1,86 +1,101 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { url } from "./Info";
 import "./AllBookings.css";
 
 export default function AllBookings() {
-  const statusFlow = ["Confirmed", "Packed", "Departed", "Delivered"];
+  const { state: crop } = useLocation();
+  const sellerEmail = localStorage.getItem("email");
+
+  const statusFlow = ["confirmed", "packed", "out for delivery", "delivered"];
 
   const statusLabel = {
-    Confirmed: "Order Confirmed",
-    Packed: "Packed",
-    Departed: "Out for Delivery",
-    Delivered: "Delivered",
+    confirmed: "Order Confirmed",
+    packed: "Packed",
+    "out for delivery": "Out for Delivery",
+    delivered: "Delivered",
+    cancelled: "Cancelled"
   };
 
-  // OTP is visible only to buyer (simulated here)
-  const DELIVERY_OTP = "1234";
+  const [bookings, setBookings] = useState([]);
 
-  const [bookings, setBookings] = useState([
-    {
-      id: 1,
-      buyerName: "Rohit Sharma",
-      mobile: "9876543210",
-      pincode: "462001",
-      address: "MP Nagar, Bhopal",
-      bookingDate: "02 Jan 2026",
-      deliveryDate: "04 Jan 2026",
-      quantity: "5 Kg",
-      amount: "₹125",
-      statusIndex: 0, // Confirmed
-      otpInput: "",
-      cancelled: false,
-    },
-    {
-      id: 2,
-      buyerName: "Anjali Verma",
-      mobile: "9123456780",
-      pincode: "462003",
-      address: "Arera Colony, Bhopal",
-      bookingDate: "01 Jan 2026",
-      deliveryDate: "03 Jan 2026",
-      quantity: "10 Kg",
-      amount: "₹250",
-      statusIndex: 1, // Packed
-      otpInput: "",
-      cancelled: false,
-    },
-  ]);
+  // 🔹 FETCH BOOKINGS
+  useEffect(() => {
+    fetch(`${url}/bookings/${sellerEmail}/${crop.id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.status === "success") {
+          const formatted = res.data.map((o) => ({
+            id: o._id,
+            buyerName: o.user_email,
+            mobile: o.mobile,
+            pincode: o.pincode,
+            address: o.address,
+            bookingDate: new Date(o.order_date).toLocaleDateString("en-IN"),
+            deliveryDate: new Date(o.delivery_date).toLocaleDateString("en-IN"),
+            quantity: `${o.quantity} Kg`,
+            amount: `₹${o.amount}`,
+            status: o.status,
+            otpInput: "",
+            otp: o.otp
+          }));
+          setBookings(formatted);
+        }
+      });
+  }, [crop.id, sellerEmail]);
 
-  // ✅ Update status ONLY for clicked buyer
-  const updateStatus = (id) => {
-    setBookings((prev) =>
-      prev.map((b) =>
-        b.id === id && b.statusIndex < 2
-          ? { ...b, statusIndex: b.statusIndex + 1 }
-          : b
-      )
-    );
+  // 🔹 UPDATE STATUS
+  const updateStatus = async (id) => {
+    const res = await fetch(`${url}/updateorderstatus/${id}`, {
+      method: "PUT"
+    });
+    const data = await res.json();
+
+    if (data.status === "success") {
+      setBookings((prev) =>
+        prev.map((b) =>
+          b.id === id ? { ...b, status: data.newStatus } : b
+        )
+      );
+    }
   };
 
-  // ✅ Cancel ONLY clicked buyer
-  const cancelBooking = (id) => {
+  // 🔹 CANCEL BOOKING
+  const cancelBooking = async (id) => {
     if (!window.confirm("Cancel this booking?")) return;
 
-    setBookings((prev) =>
-      prev.map((b) =>
-        b.id === id ? { ...b, cancelled: true } : b
-      )
-    );
+    const res = await fetch(`${url}/cancelbooking/${id}`, {
+      method: "PUT"
+    });
+    const data = await res.json();
+
+    if (data.status === "success") {
+      setBookings((prev) =>
+        prev.map((b) =>
+          b.id === id ? { ...b, status: "cancelled" } : b
+        )
+      );
+    }
   };
 
-  // ✅ OTP submit ONLY for clicked buyer
-  const submitOtp = (id) => {
-    setBookings((prev) =>
-      prev.map((b) => {
-        if (b.id !== id) return b;
+  // 🔹 VERIFY OTP
+  const submitOtp = async (id, otp) => {
+    const res = await fetch(`${url}/verifyotp/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ otp })
+    });
 
-        if (b.otpInput === DELIVERY_OTP) {
-          return { ...b, statusIndex: 3, otpInput: "" };
-        } else {
-          alert("Invalid OTP. Please confirm with buyer.");
-          return b;
-        }
-      })
-    );
+    const data = await res.json();
+    if (data.status === "success") {
+      setBookings((prev) =>
+        prev.map((b) =>
+          b.id === id ? { ...b, status: "delivered", otpInput: "" } : b
+        )
+      );
+    } else {
+      alert(data.message);
+    }
   };
 
   return (
@@ -89,7 +104,7 @@ export default function AllBookings() {
 
       <div className="AllBookings-container">
         {bookings.map((b) => {
-          const currentStatus = statusFlow[b.statusIndex];
+          const currentStatus = b.status;
 
           return (
             <div className="AllBookings-card" key={b.id}>
@@ -128,48 +143,41 @@ export default function AllBookings() {
               </div>
 
               <div className="AllBookings-statusRow">
-                {b.cancelled ? (
-                  <span className="AllBookings-statusText cancelled">
-                    Cancelled
-                  </span>
-                ) : (
-                  <span
-                    className={`AllBookings-statusText ${currentStatus.toLowerCase()}`}
-                  >
-                    {statusLabel[currentStatus]}
-                  </span>
-                )}
+                <span
+                  className={`AllBookings-statusText ${currentStatus.replace(
+                    / /g,
+                    "-"
+                  )}`}
+                >
+                  {statusLabel[currentStatus]}
+                </span>
               </div>
 
-              {/* ✅ CONFIRMED & PACKED → Cancel + Update */}
-              {!b.cancelled &&
-                (currentStatus === "Confirmed" ||
-                  currentStatus === "Packed") && (
-                  <div className="AllBookings-actions">
-                    <button
-                      className="AllBookings-actionBtn AllBookings-cancelBtn"
-                      onClick={() => cancelBooking(b.id)}
-                    >
-                      Cancel
-                    </button>
+              {(currentStatus === "confirmed" ||
+                currentStatus === "packed") && (
+                <div className="AllBookings-actions">
+                  <button
+                    className="AllBookings-actionBtn AllBookings-cancelBtn"
+                    onClick={() => cancelBooking(b.id)}
+                  >
+                    Cancel
+                  </button>
 
-                    <button
-                      className="AllBookings-actionBtn AllBookings-updateBtn"
-                      onClick={() => updateStatus(b.id)}
-                    >
-                      Update Status
-                    </button>
-                  </div>
-                )}
+                  <button
+                    className="AllBookings-actionBtn AllBookings-updateBtn"
+                    onClick={() => updateStatus(b.id)}
+                  >
+                    Update Status
+                  </button>
+                </div>
+              )}
 
-              {/* ✅ OUT FOR DELIVERY → OTP ONLY */}
-              {!b.cancelled && currentStatus === "Departed" && (
+              {currentStatus === "out for delivery" && (
                 <div className="AllBookings-otpSection">
                   <input
                     type="text"
-                    placeholder="Enter delivery OTP"
-                    maxLength="6"
                     className="AllBookings-otpInput"
+                    placeholder="Enter delivery OTP"
                     value={b.otpInput}
                     onChange={(e) =>
                       setBookings((prev) =>
@@ -184,7 +192,7 @@ export default function AllBookings() {
 
                   <button
                     className="AllBookings-otpBtn"
-                    onClick={() => submitOtp(b.id)}
+                    onClick={() => submitOtp(b.id, b.otpInput)}
                   >
                     Submit OTP
                   </button>

@@ -1,42 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Cart.css";
+import { url } from "./Info";
 
 export default function Cart() {
   const navigate = useNavigate();
+  const [crops, setCrops] = useState([]);
 
-  const [crops, setCrops] = useState([
-    {
-      id: 1,
-      name: "Tomato",
-      seller: "Ramesh Patel",
-      contact: "FARM123",
-      price: 25,
-      rating: 4.5,
-      image: "https://images.unsplash.com/photo-1607305387299-a3d9611cd469",
-    },
-    {
-      id: 2,
-      name: "Potato",
-      seller: "Suresh Yadav",
-      contact: "FARM456",
-      price: 18,
-      rating: 4.2,
-      image: "https://images.unsplash.com/photo-1582515073490-dc84f2a6f4a8",
-    },
-    {
-      id: 3,
-      name: "Onion",
-      seller: "Mahesh Singh",
-      contact: "FARM789",
-      price: 22,
-      rating: 4.7,
-      image: "https://images.unsplash.com/photo-1604908177522-4026bde57c21",
-    },
-  ]);
+  // 🔹 Fetch cart items on load
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (!email) return;
 
+    fetch(`${url}/mycart/${email}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          setCrops(
+            data.data.map(item => ({
+              id: item._id,              // cart id
+              cropId: item.crop_id,      // crop id
+              name: item.crop_name,
+              seller: item.seller_email,
+              contact: item.seller_email,
+              price: item.price,
+              rating: 4.5,               // static rating
+              image: item.image
+            }))
+          );
+        }
+      })
+      .catch(err => console.log(err));
+  }, []);
+
+  // 🔹 Remove item from cart
   const removeItem = (id) => {
-    setCrops(crops.filter((item) => item.id !== id));
+    fetch(`${url}/removefromcart/${id}`, {
+      method: "DELETE"
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === "success") {
+          setCrops(crops.filter(item => item.id !== id));
+        }
+      })
+      .catch(err => console.log(err));
   };
 
   return (
@@ -81,11 +89,11 @@ export default function Cart() {
               onClick={() =>
                 navigate("/place", {
                   state: {
-                    id: crop.id,
+                    cropId: crop.cropId,
                     name: crop.name,
                     seller: crop.seller,
                     price: crop.price,
-                    image: crop.image,
+                    image: crop.image
                   },
                 })
               }

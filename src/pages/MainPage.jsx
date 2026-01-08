@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 
 export default function MainLayout() {
   const [search, setSearch] = useState("");
+  
 
   return (
     <>

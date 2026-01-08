@@ -1,20 +1,81 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./PlaceOrder.css";
+import { url } from "./Info";
 
 export default function PlaceOrder() {
   const usenavigate = useNavigate();
   const { state } = useLocation();
   const item = state;
 
+  // ✅ FIX: support both cropId & crop_id
+  const cropId = item?.cropId || item?.crop_id;
+
   const [quantity, setQuantity] = useState(1);
   const [place, setPlace] = useState("");
+  const [deliveryCharge, setDeliveryCharge] = useState(0);
 
-  const deliveryCharge =
-    quantity < 10 ? 40 : (quantity / 10) * 20 + 40;
+  // 🔹 Fetch delivery charge
+  useEffect(() => {
+    if (!cropId) return;
 
+    fetch(`${url}/deliverycharge/${cropId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "success") {
+          setDeliveryCharge(data.delivery_charge);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, [cropId]);
+
+  // 🧮 Price calculation
   const itemTotal = item.price * quantity;
-  const finalPrice = itemTotal + deliveryCharge+10;
+  const finalPrice = itemTotal + deliveryCharge + 10;
+
+  // 🔴 CONFIRM ORDER LOGIC
+  const confirmOrder = () => {
+    if (!cropId) {
+      alert("Crop not found. Please try again.");
+      return;
+    }
+
+    if (quantity <= 0) {
+      alert("Quantity must be at least 1 kg");
+      return;
+    }
+
+    fetch(`${url}/placeorder`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        user_email: localStorage.getItem("email"),
+        seller_email: item.seller,
+        crop_id: cropId,
+        crop_name: item.name,
+        image: item.image,
+        quantity: quantity,
+        amount: finalPrice,
+        address: place || localStorage.getItem("address"),
+        mobile: localStorage.getItem("mobile"),
+        pincode: localStorage.getItem("pincode")
+      })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "success") {
+          usenavigate("/mainpage/orders");
+        } else {
+          alert(data.message || "Order failed");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Server error. Try again.");
+      });
+  };
 
   return (
     <div className="place-order-page">
@@ -52,11 +113,12 @@ export default function PlaceOrder() {
             />
           </div>
 
-          {/* Delivery Location */}
+          {/* Delivery Address */}
           <div className="place-order-field place-selector_name">
             <div className="place-order-address-header">
               <label className="place-order-label">
-                Delivery Location in your Pincode-{545345}
+                Delivery Location in your Pincode-
+                {localStorage.getItem("pincode")}
               </label>
 
               <button
@@ -77,7 +139,7 @@ export default function PlaceOrder() {
             />
           </div>
 
-          {/* Price Breakdown */}
+          {/* Price Summary */}
           <div className="place-order-summary">
             <p>
               Items Total Price: <span>₹{itemTotal}</span>
@@ -86,29 +148,19 @@ export default function PlaceOrder() {
               Delivery Charge: <span>₹{deliveryCharge}</span>
             </p>
             <p>
-              Web  Service Charge: <span>₹10</span>
+              Web Service Charge: <span>₹10</span>
             </p>
             <p className="place-order-final">
               Final Amount: <span>₹{finalPrice}</span>
             </p>
           </div>
 
-          <button type="button" onClick={()=>{usenavigate('/mainpage/orders',{state:{
-      
-      id: item.id,
-      cropName: item.name,
-      image:
-        item.image,
-      seller: item.seller,
-      orderDate: "30 Dec 2025",
-      deliveryDate: "03 Jan 2026",
-      amount: finalPrice,
-      quantity: quantity,
-      status: "confirm",
-      otp: Math.floor(Math.random()*100000),
-      address: "Near Bus Stand, Kolar Road, Bhopal, MP",
-      pincode: "462042",
-    }})}} className="place-order-confirm-btn">
+          {/* ✅ Confirm Order */}
+          <button
+            type="button"
+            className="place-order-confirm-btn"
+            onClick={confirmOrder}
+          >
             Confirm Order
           </button>
         </div>

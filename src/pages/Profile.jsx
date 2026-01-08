@@ -1,20 +1,61 @@
 import { useState } from "react";
 import "./Profile.css";
+import { url } from "./Info";
 
 export default function Profile() {
   const [profile, setProfile] = useState({
-    name: "Himanshu Barman",
-    email: "himanshu@gmail.com",
-    mobile: "", // empty = show Add Mobile
-    pincode: "462001",
-    location: "Bhopal fuufg erhguryf erheueyhf vhfff fbncvtr e fyv vbbnv vbb vjjjjjj nnn bc",
+    name: localStorage.getItem("name"),
+    email: localStorage.getItem("email"), // ❌ NEVER UPDATED
+    mobile: localStorage.getItem("mobile"),
+    pincode: localStorage.getItem("pincode"),
+    location: localStorage.getItem("address")
   });
 
-  const updateField = (field, label) => {
+  // 🔹 Update ONLY one field at a time (mobile / pincode / address)
+  const updateField = async (field, label) => {
     const value = prompt(`Enter ${label}`);
     if (!value) return;
 
-    setProfile({ ...profile, [field]: value });
+    // UI field → DB field mapping
+    const dbField = field === "location" ? "address" : field;
+
+    try {
+      const res = await fetch(`${url}/updateprofile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: profile.email, // 🔑 used ONLY to identify user
+          field: dbField,       // 🔒 only allowed fields reach backend
+          value
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        // ✅ update ONLY this field in UI
+        setProfile((prev) => ({
+          ...prev,
+          [field]: value
+        }));
+
+        // ✅ update ONLY this field in localStorage
+        if (field === "location") {
+          localStorage.setItem("address", value);
+        } else {
+          localStorage.setItem(field, value);
+        }
+
+        alert(`${label} updated successfully`);
+      } else {
+        alert(data.message || "Update failed");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Server error");
+    }
   };
 
   return (
@@ -22,7 +63,7 @@ export default function Profile() {
       {/* TOP USER CARD */}
       <div className="profile-user-card">
         <div className="profile-avatar">
-          {profile.name.charAt(0)}
+          {profile.name?.charAt(0)}
         </div>
         <div className="profile-user-info">
           <span className="profile-user-name">{profile.name}</span>
@@ -34,14 +75,19 @@ export default function Profile() {
       <div className="profile-section">
         <h4 className="profile-section-title">Account Information</h4>
 
+        {/* MOBILE */}
         <div className="profile-item">
           <span>Mobile Number</span>
           {profile.mobile ? (
             <div className="profile-item-action">
-              <span style={{color:"#6B6B6B"}}>{profile.mobile}</span>
+              <span style={{ color: "#792f2fff" }}>
+                {profile.mobile}
+              </span>
               <button
                 className="profile-btn"
-                onClick={() => updateField("mobile", "Mobile Number")}
+                onClick={() =>
+                  updateField("mobile", "Mobile Number")
+                }
               >
                 Change
               </button>
@@ -49,33 +95,47 @@ export default function Profile() {
           ) : (
             <button
               className="profile-btn profile-btn-outline"
-              onClick={() => updateField("mobile", "Mobile Number")}
+              onClick={() =>
+                updateField("mobile", "Mobile Number")
+              }
             >
               Add Mobile Number
             </button>
           )}
         </div>
 
+        {/* PINCODE */}
         <div className="profile-item">
           <span>Pincode</span>
           <div className="profile-item-action">
-            <span style={{color:"#6B6B6B"}}>{profile.pincode || "Not Added"}</span>
+            <span style={{ color: "#6B6B6B" }}>
+              {profile.pincode || "Not Added"}
+            </span>
             <button
               className="profile-btn"
-              onClick={() => updateField("pincode", "Pincode")}
+              onClick={() =>
+                updateField("pincode", "Pincode")
+              }
             >
               Change
             </button>
           </div>
         </div>
 
+        {/* LOCATION / ADDRESS */}
         <div className="profile-item">
-          <span style={{marginRight:"5px"}}>Location </span>
+          <span style={{ marginRight: "5px" }}>
+            Location
+          </span>
           <div className="profile-item-action">
-            <span style={{color:"#6B6B6B"}}>{profile.location || "Not Added"}</span>
+            <span style={{ color: "#6B6B6B" }}>
+              {profile.location || "Not Added"}
+            </span>
             <button
               className="profile-btn"
-              onClick={() => updateField("location", "Location")}
+              onClick={() =>
+                updateField("location", "Location")
+              }
             >
               Change
             </button>
@@ -94,7 +154,15 @@ export default function Profile() {
       </div>
 
       {/* LOGOUT */}
-      <button className="profile-logout-btn">Logout</button>
+      <button
+        className="profile-logout-btn"
+        onClick={() => {
+          localStorage.clear();
+          window.location.href = "/";
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 }

@@ -1,43 +1,90 @@
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import "./Orders.css";
+import { url } from "./Info";
 
 export default function Orders() {
-  const {state} = useLocation();
-  let item = state;
-  const orders = [
-    {
-      id: "ORD12345",
-      cropName: "Tomato",
-      image:
-        "https://images.unsplash.com/photo-1607305387299-a3d9611cd469",
-      seller: "Ramesh Patel",
-      orderDate: "02 Jan 2026",
-      deliveryDate: "05 Jan 2026",
-      amount: 250,
-      quantity: "10 Kg",
-      status: "Packed",
-      otp: "4829",
-      address: "House No 21, Arera Colony, Bhopal, MP",
-      pincode: "462001",
-    },
-    {
-      id: "ORD12346",
-      cropName: "Potato",
-      image:
-        "https://images.unsplash.com/photo-1582515073490-dc84f2a6f4a8",
-      seller: "Suresh Yadav",
-      orderDate: "30 Dec 2025",
-      deliveryDate: "03 Jan 2026",
-      amount: 180,
-      quantity: "5 Kg",
-      status: "Delivered",
-      otp: "✔ Verified",
-      address: "Near Bus Stand, Kolar Road, Bhopal, MP",
-      pincode: "462042",
-    },
-  ];
-  if(item)
- orders.push(item)
+  const [orders, setOrders] = useState([]);
+
+  // 🔹 Fetch all orders of logged-in user
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (!email) return;
+
+    fetch(`${url}/myorders/${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "success") {
+          setOrders(
+            data.data.map((order) => ({
+              id: order._id,
+              cropName: order.crop_name,
+              image: order.image,
+              seller: order.seller_email,
+
+              orderDate: new Date(order.order_date).toLocaleDateString(
+                "en-IN",
+                { day: "2-digit", month: "short", year: "numeric" }
+              ),
+
+              deliveryDate: new Date(order.delivery_date).toLocaleDateString(
+                "en-IN",
+                { day: "2-digit", month: "short", year: "numeric" }
+              ),
+
+              amount: order.amount,
+              quantity: `${order.quantity} Kg`,
+              status: order.status,
+
+              otp:
+                order.status === "delivered"
+                  ? "✔ Verified"
+                  : order.status === "cancelled"
+                  ? "❌ Cancelled"
+                  : order.otp,
+
+              address: order.address,
+              pincode: order.pincode
+            }))
+          );
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  // 🔴 Cancel Order Logic
+  const cancelOrder = async (orderId) => {
+    const confirmCancel = window.confirm(
+      "Are you sure you want to cancel this order?"
+    );
+    if (!confirmCancel) return;
+
+    try {
+      const res = await fetch(`${url}/cancelorder/${orderId}`, {
+        method: "PUT"
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        setOrders((prevOrders) =>
+          prevOrders.map((order) =>
+            order.id === orderId
+              ? {
+                  ...order,
+                  status: "cancelled",
+                  otp: "❌ Cancelled"
+                }
+              : order
+          )
+        );
+      } else {
+        alert(data.message);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="orders-page">
       <h2 className="orders-title">My Orders</h2>
@@ -85,12 +132,25 @@ export default function Orders() {
                 PIN: <strong>{order.pincode}</strong>
               </span>
 
-              {order.status !== "Delivered" && (
-                <button className="cancel-btn">Cancel Order</button>
-              )}
+              {/* ❌ Cancel Button (Removed after cancellation) */}
+              {order.status !== "delivered" &&
+                order.status !== "cancelled" && (
+                  <button
+                    className="cancel-btn"
+                    onClick={() => cancelOrder(order.id)}
+                  >
+                    Cancel Order
+                  </button>
+                )}
             </div>
           </div>
         ))}
+
+        {orders.length === 0 && (
+          <p style={{ textAlign: "center", width: "100%" }}>
+            No orders found 📦
+          </p>
+        )}
       </div>
     </div>
   );
